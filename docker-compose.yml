@@ -1,0 +1,71 @@
+version: "3"
+
+# ネットワーク
+networks:
+    pr-network-laravel:
+        driver: bridge
+
+#ボリューム
+volumes:
+    dir-site:
+        driver_opts:
+            device: /Users/songtranvan/Desktop/IT研修/kenshu-laravel/laravel_app/
+            o: bind
+            type: bind
+
+services:
+    # laravel_app コンテナ
+    laravel_app:
+        build:
+            context: ./laravel_app/
+            dockerfile: laravel_app.dockerfile
+        tty: true
+        restart: always
+        networks: 
+            - pr-network-laravel
+        working_dir: /var/www
+        volumes: 
+            - dir-site:/var/www/
+
+    # ウェブサーバ コンテナ
+    web:
+        build:
+          context: ./web/
+          dockerfile: web.dockerfile
+        restart: always
+        networks: 
+            - pr-network-laravel
+        working_dir: /var/www
+        volumes: 
+            - dir-site:/var/www/
+            - ./laravel_app/public:/var/www/public
+        ports: 
+            - "6969:80"
+            - "443:443"
+
+    # MySQL コンテナ
+    mysql:
+        container_name: laravel-mysql
+        image: mysql:latest
+        hostname: mysql
+        restart: always
+        networks: 
+            - pr-network-laravel
+        volumes: 
+            - ./database/kenshu_laravel_db:/var/lib/mysql
+            - ./database/my.cnf:/etc/mysql/my.cnf
+        command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-authentication-plugin=mysql_native_password']
+        env_file:
+            - ./database/mysql.env
+
+    # PHPMyAdmin コンテナ
+    phpmyadmin:
+        container_name: laravel-phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        env_file:
+            - ./database/pma.env
+        ports: 
+            - "8080:80"
+        networks:
+            - pr-network-laravel

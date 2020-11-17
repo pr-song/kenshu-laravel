@@ -1,0 +1,7 @@
+!database/
+
+database/*
+!database/my.cnf
+!database/mysql.env
+!database/pma.env
+
