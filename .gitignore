@@ -1,7 +1,9 @@
 !database/
 
-database/*
+database/kenshu_laravel_db/*
+
 !database/my.cnf
 !database/mysql.env
 !database/pma.env
 
+laravel_app/public/css/

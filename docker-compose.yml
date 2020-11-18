@@ -16,6 +16,7 @@ volumes:
 services:
     # laravel_app コンテナ
     laravel_app:
+        container_name: laravel-app
         build:
             context: ./laravel_app/
             dockerfile: laravel_app.dockerfile
@@ -29,6 +30,7 @@ services:
 
     # ウェブサーバ コンテナ
     web:
+        container_name: laravel-web
         build:
           context: ./web/
           dockerfile: web.dockerfile
