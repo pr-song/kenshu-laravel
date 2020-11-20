@@ -5,14 +5,6 @@ networks:
     pr-network-laravel:
         driver: bridge
 
-#ボリューム
-volumes:
-    dir-site:
-        driver_opts:
-            device: /Users/songtranvan/Desktop/IT研修/kenshu-laravel/laravel_app/
-            o: bind
-            type: bind
-
 services:
     # laravel_app コンテナ
     laravel_app:
@@ -26,7 +18,7 @@ services:
             - pr-network-laravel
         working_dir: /var/www
         volumes: 
-            - dir-site:/var/www/
+            - ./laravel_app/:/var/www/
 
     # ウェブサーバ コンテナ
     web:
@@ -39,11 +31,10 @@ services:
             - pr-network-laravel
         working_dir: /var/www
         volumes: 
-            - dir-site:/var/www/
+            - ./web/:/var/www/
             - ./laravel_app/public:/var/www/public
         ports: 
             - "6969:80"
-            - "443:443"
 
     # MySQL コンテナ
     mysql:
