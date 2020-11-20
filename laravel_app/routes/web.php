@@ -11,4 +11,6 @@
 |
 */
 
-Route::get('/', "StaticPagesController@home");
+Auth::routes();
+
+Route::get('/', 'PagesController@index')->name('home');

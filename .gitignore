@@ -7,3 +7,5 @@ database/kenshu_laravel_db/*
 !database/pma.env
 
 laravel_app/public/css/
+laravel_app/public/js/
+laravel_app/public/images/
