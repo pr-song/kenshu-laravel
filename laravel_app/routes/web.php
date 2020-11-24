@@ -11,6 +11,13 @@
 |
 */
 
+/** 認証のルート */
 Auth::routes();
 
+/** ホームページのルート */
 Route::get('/', 'PagesController@index')->name('home');
+
+/** Articleのルート */
+Route::resource('articles', 'ArticlesController')->parameters([
+    'articles' => 'slug'
+]);

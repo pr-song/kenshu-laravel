@@ -1,14 +1,13 @@
-@extends("layouts.master")
+@extends('layouts.master')
 
-@section("title", "ホーム")
+@section('title', '全ての記事')
 
-@section("content")
-    @include('partials.message')
+@section('content')
     <div class="row">
         @foreach ($articles as $article)
             <div class="col-lg-4">
                 <div class="bs-component">
-                    <div class="card text-white bg-dark mb-5" style="min-height: 250px; width: 18rem;">
+                    <div class="card text-white bg-dark mb-3" style="min-height: 250px; width: 18rem;">
                         <div class="card-body">
                         <h6 class="card-title">{{ $article->title }}</h6>
                         <hr class="my-4">

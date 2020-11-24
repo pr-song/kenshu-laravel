@@ -1,0 +1,32 @@
+.main {
+    padding: 30px 0px;
+}
+
+.content {
+    min-height: 780px;
+    border-top: none;
+    border: 1px solid #e5e5e5;
+    padding: 32px 20px 39px;
+}
+
+.card-title {
+    min-height: 120px;
+}
+
+#imagePreview img {
+    margin-bottom: 20px;
+}
+
+#imagePreview img:hover, img.selected {
+    border: 2px solid #294c7a;  
+}
+
+.img-list {
+    display: flex;
+    list-style:none;
+    padding: 0;
+}
+
+.img-list-item {
+    width: 100%;
+}

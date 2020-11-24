@@ -6,6 +6,6 @@ database/kenshu_laravel_db/*
 !database/mysql.env
 !database/pma.env
 
-laravel_app/public/css/
-laravel_app/public/js/
+laravel_app/public/css/style.css
+laravel_app/public/css/bootstrap.min.css
 laravel_app/public/images/
