@@ -31,6 +31,6 @@
             img = $(this).addClass('selected');
         
         $('#thumbnail').val(images.index(img));
-        $('#thumbnail_image').val($('.main img').attr('src'));
+        $('#thumbnail_image').val($('img.img-list-item.selected').attr('src').split("/").pop());
     });
 })();

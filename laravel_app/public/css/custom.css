@@ -30,3 +30,12 @@
 .img-list-item {
     width: 100%;
 }
+
+.article-more {
+    padding: 20px 0px 30px;
+}
+
+.article-more p {
+    float: right;
+    color: #294c7a;
+}

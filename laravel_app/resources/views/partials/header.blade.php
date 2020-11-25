@@ -17,7 +17,7 @@
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
           aria-expanded="false">{{ Auth::user()->name }}</a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">マイ投稿</a>
+          <a class="dropdown-item" href="{{ route('articles.myarticles') }}">マイ記事</a>
           <a class="dropdown-item" href="{{ route('articles.create') }}">新投稿作成</a>
           <div class="dropdown-divider"></div>
           <form action="{{ route('logout') }}" method="post">
