@@ -21,3 +21,4 @@ Route::get('/', 'PagesController@index')->name('home');
 Route::resource('articles', 'ArticlesController')->parameters([
     'articles' => 'slug'
 ]);
+Route::get('/myarticles', 'ArticlesController@myarticles')->name('articles.myarticles');
