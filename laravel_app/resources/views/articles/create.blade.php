@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', '全ての記事')
+@section('title', '新記事の作成')
 
 @section('content')
 <div class="content">
@@ -26,7 +26,7 @@
                     @endforeach
                 </select>
             </div>
-            <input type="hidden" name="thumbnail" id="thumbnail" />
+            <input type="hidden" name="thumbnail_image" id="thumbnail_image">
             <div class="form-group">
                 <label for="file">イメージ</label>
                 <input type="file" class="form-control-file" id="file" name="images[]" multiple>

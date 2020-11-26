@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', '全ての記事')
+@section('title', $article->title)
 
 @section('content')
 @include('partials.message')

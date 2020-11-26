@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ArticlesController extends Controller
 {
@@ -52,8 +53,8 @@ class ArticlesController extends Controller
         try {
             // サムネイル画像の選択をチェックする /
             if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $id => $image) {
-                    if ($request->thumbnail == $id) {
+                foreach ($request->file('images') as $image) {
+                    if ($request->thumbnail_image == $image->getClientOriginalName()) {
                         $thumbnail = time().$image->getClientOriginalName();
                     }
                 }
@@ -124,9 +125,18 @@ class ArticlesController extends Controller
         DB::beginTransaction();
         try {
             $article = Article::whereSlug($slug)->firstOrFail();
+            // サムネイル画像の選択をチェックする /
+            $thumbnail = $request->thumbnail_image;
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    if ($request->thumbnail_image == $image->getClientOriginalName() && $request->thumbnail_image != $article->thumbnail) {
+                        $thumbnail = time().$image->getClientOriginalName();
+                    }
+                }
+            }
             $article->title = $request->title;
             $article->content = $request->content;
-            $article->thumbnail = $request->thumbnail_image;
+            $article->thumbnail = $thumbnail;
             $article->save();
             $article->tags()->sync($request->tags);
 
@@ -160,6 +170,12 @@ class ArticlesController extends Controller
             // ピボットテーブルから削除する
             $article->tags()->detach();
             // 記事の画像を削除する
+            foreach ($article->images as $image) {
+                $image_path = public_path("/images/".$image->path);
+                if(File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+            }
             $article->images()->delete();
             $article->delete();     
             DB::commit();
@@ -170,7 +186,6 @@ class ArticlesController extends Controller
             DB::rollBack();
             return back()->with('message', '記事削除が失敗しました。もう一度試してください！');
         }
-        
     }
 
     /**
