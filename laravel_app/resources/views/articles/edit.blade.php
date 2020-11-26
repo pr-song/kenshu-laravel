@@ -28,19 +28,18 @@
                 </select>
             </div>
             <input type="hidden" name="thumbnail_image" id="thumbnail_image" value="{{ $article->thumbnail }}">
-            <input type="hidden" name="thumbnail" id="thumbnail" />
             <div class="form-group">
                 <label for="file">イメージ</label>
                 <input type="file" class="form-control-file" id="file" name="images[]" multiple>
                 <small id="fileHelp" class="form-text text-muted">複数アプロード可能</small>
             </div>
             @if (!empty($article->thumbnail))
-                <img src="{!! asset('images/'.$article->thumbnail) !!}" class="d-block w-100" alt="{{ $article->slug }}">
+                <img src="{!! asset('images/'.$article->thumbnail) !!}" class="d-block w-100" alt="{{ $article->slug }}"><br>
             @endif
             <div id="imagePreview">
                 <ul class="img-list">
                     @foreach ($article->images as $image)
-                        <li><img src="{!! asset('images/'.$image->path) !!}" class="img-list-item" alt="{{ $article->slug }}"></li><br>
+                        <li><img src="{!! asset('images/'.$image->path) !!}" name="{{ $image->path }}" class="img-list-item" alt="{{ $article->slug }}"></li><br>
                     @endforeach
                 </ul>
             </div>

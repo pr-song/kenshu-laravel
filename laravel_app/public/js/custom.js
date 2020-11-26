@@ -13,24 +13,21 @@
         };
     });
 
-    var inputLocalFont = document.getElementById("file");
-    inputLocalFont.addEventListener("change",previewImages,false);
-
-    function previewImages(){
-        var fileList = this.files;
+    $('#file').change(function(){
+        var files = $('#file').prop("files")
+        var names = $.map(files, function(val) { return val.name; });
         var anyWindow = window.URL || window.webkitURL;
-        for(var i = 0; i < fileList.length; i++){
-            var objectUrl = anyWindow.createObjectURL(fileList[i]);
-            $('#imagePreview').append('<img src="' + objectUrl + '" />');
-            window.URL.revokeObjectURL(fileList[i]);
+        for (var i = 0; i < names.length; i++) {
+            var objectUrl = anyWindow.createObjectURL(files[i]);
+            $('#imagePreview').append('<img src="' + objectUrl + '" name="'+ names[i] +'" class="img-list-item"/>');
         }
-    }
+    })
 
     $('#imagePreview').on('click', 'img', function() {
         var images = $('#imagePreview img').removeClass('selected'),
             img = $(this).addClass('selected');
         
         $('#thumbnail').val(images.index(img));
-        $('#thumbnail_image').val($('img.img-list-item.selected').attr('src').split("/").pop());
+        $('#thumbnail_image').val($('img.img-list-item.selected').attr('name'));
     });
 })();
