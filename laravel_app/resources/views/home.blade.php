@@ -11,6 +11,7 @@
                     <div class="card text-white bg-dark mb-5" style="min-height: 250px; width: 18rem;">
                         <div class="card-body">
                         <h6 class="card-title">{{ $article->title }}</h6>
+                        <p>{{ $article->user->name }}</p>
                         <hr class="my-4">
                         <a href="{{ action('ArticlesController@show', $article->slug) }}" class="btn btn-info">詳細を見る</a>
                         </div>
