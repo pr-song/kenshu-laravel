@@ -4,9 +4,10 @@
 
 use App\Models\Tag;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(Tag::class, function (Faker $faker) {
     return [
-        'name' => $faker->randomElement(['総合','エンタメ','アプリ','モバイル','ファッション','ビジネス'])
+        'name' => Str::random(10)
     ];
 });

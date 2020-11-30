@@ -82,7 +82,7 @@ class ArticlesController extends Controller
             }
             DB::commit();
 
-            return redirect(route('articles.show', ['slug' => $article->slug]))->with('status', '記事作成しました！');
+            return redirect(route('articles.myarticles'))->with('status', '記事作成しました！');
         }
         catch(Exception $e) {
             DB::rollBack();
