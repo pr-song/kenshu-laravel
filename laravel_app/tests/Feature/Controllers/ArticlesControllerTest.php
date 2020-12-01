@@ -14,6 +14,10 @@ class ArticlesControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    protected $tag1, $tag2;
+    protected $user, $anotherUser;
+    protected $article, $anotherArticle;
+
     public function setUp():void {
         parent::setUp();
         $this->tag1 = factory(Tag::class)->create(['name' => 'qwert']);
@@ -97,7 +101,7 @@ class ArticlesControllerTest extends TestCase
         $article = Article::where('title', $title)->first();
 
         $this->assertNotNull($article);
-        $response->assertRedirect(route('articles.myarticles'));
+        $response->assertRedirect(route('articles.my_articles'));
         $response->assertSessionHas('status', '記事作成しました！');
         $this->assertEquals($title, $article->title);
         $response->assertStatus(302);
@@ -115,7 +119,7 @@ class ArticlesControllerTest extends TestCase
         $article = Article::where('title', $title)->first();
 
         $this->assertNotNull($article->images);
-        $response->assertRedirect(route('articles.myarticles'));
+        $response->assertRedirect(route('articles.my_articles'));
         $response->assertSessionHas('status', '記事作成しました！');
         $this->assertEquals($title, $article->title);
         $response->assertStatus(302);
@@ -136,7 +140,7 @@ class ArticlesControllerTest extends TestCase
         $this->assertNotNull($article->images);
         $this->assertNotNull($article->thumbnail);
         $this->assertEquals($title, $article->title);
-        $response->assertRedirect(route('articles.myarticles'));
+        $response->assertRedirect(route('articles.my_articles'));
         $response->assertSessionHas('status', '記事作成しました！');
         $response->assertStatus(302);
     }
@@ -152,18 +156,18 @@ class ArticlesControllerTest extends TestCase
         $response->assertRedirect(route('articles.create'));
     }
     /**
-     * myarticlesアクションのテスト
+     * my_articlesアクションのテスト
      */
-    public function testMyArticles() {
-        $response = $this->actingAs($this->user)->get(route('articles.myarticles'));
+    public function testMy_articles() {
+        $response = $this->actingAs($this->user)->get(route('articles.my_articles'));
 
-        $response->assertViewIs('articles.myarticles');
+        $response->assertViewIs('articles.my_articles');
         $response->assertViewHas('articles');
         $response->assertStatus(200);
     }
 
-    public function testMyArticlesWithoutLogin() {
-        $response = $this->get(route('articles.myarticles'));
+    public function testMy_articlesWithoutLogin() {
+        $response = $this->get(route('articles.my_articles'));
 
         $response->assertRedirect(route('login'));
         $response->assertStatus(302);
@@ -246,16 +250,16 @@ class ArticlesControllerTest extends TestCase
     public function testDestroy() {
         $slug = $this->article->slug;
         $id = $this->article->id;
-        $response = $this->actingAs($this->user)->from(route('articles.myarticles'))->delete(route('articles.destroy', ['slug' => $slug]));
+        $response = $this->actingAs($this->user)->from(route('articles.my_articles'))->delete(route('articles.destroy', ['slug' => $slug]));
 
         $this->assertDeleted('articles', ['slug' => $slug]);
         $this->assertDeleted('images', ['article_id' => $id]);
         $response->assertSessionHas('status', '記事削除されました！');
-        $response->assertRedirect(route('articles.myarticles'));
+        $response->assertRedirect(route('articles.my_articles'));
     }
 
     public function testDestroyWithInvaliSlug() {
-        $response = $this->actingAs($this->user)->from(route('articles.myarticles'))->delete(route('articles.destroy', ['slug' => 'fail']));
+        $response = $this->actingAs($this->user)->from(route('articles.my_articles'))->delete(route('articles.destroy', ['slug' => 'fail']));
 
         $response->assertSessionHas('message', '記事見つかれません！');
         $response->assertRedirect(route('home'));

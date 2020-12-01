@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +23,4 @@ Route::get('/', 'PagesController@index')->name('home');
 Route::resource('articles', 'ArticlesController')->parameters([
     'articles' => 'slug'
 ]);
-Route::get('/myarticles', 'ArticlesController@myarticles')->name('articles.myarticles');
+Route::get('/my_articles', 'ArticlesController@myArticles')->name('articles.my_articles');
