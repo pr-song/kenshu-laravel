@@ -30,7 +30,7 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $articles = Article::with('user')->orderBy('created_at', 'desc')->get();
+        $articles = Article::with('user')->orderBy('created_at', 'desc')->paginate(9);
 
         return view('home', compact('articles'));
     }
@@ -206,7 +206,7 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function myArticles() {
-        $articles = Auth::user()->articles()->orderBy('created_at', 'desc')->get();
+        $articles = Auth::user()->articles()->orderBy('created_at', 'desc')->paginate(10);
 
         return view('articles.my_articles', compact('articles'));
     }
