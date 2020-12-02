@@ -18,4 +18,5 @@
             </div>
         @endforeach
     </div>
+    {{ $articles->links('vendor.pagination.bootstrap-4') }}
 @endsection

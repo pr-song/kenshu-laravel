@@ -5,7 +5,7 @@
 @section('content')
 <div class="content">
     @include('partials.message')
-    <form method="post" action="{{ route('articles.update', ['slug' => $article->slug]) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('articles.update', $article->slug) }}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <fieldset>
