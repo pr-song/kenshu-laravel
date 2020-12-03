@@ -8,7 +8,7 @@
         @foreach ($articles as $article)
             <div class="col-lg-4">
                 <div class="bs-component">
-                    <div class="card text-white bg-dark mb-5" style="min-height: 250px; width: 18rem;">
+                    <div class="card text-white bg-dark mb-5" style="min-height: 250px; max-width: 25rem;">
                         <div class="card-body">
                         <h6 class="card-title">{{ $article->title }}</h6>
                         <p>{{ $article->user->name }}</p>

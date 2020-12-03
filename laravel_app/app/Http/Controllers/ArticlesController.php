@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ArticlesController extends Controller
 {
@@ -26,9 +28,9 @@ class ArticlesController extends Controller
 
     /**
      * 記事一覧を取得する
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\View\View;
      */
-    public function index()
+    public function index():View
     {
         $articles = Article::with('user')->orderBy('created_at', 'desc')->paginate(9);
 
@@ -37,9 +39,9 @@ class ArticlesController extends Controller
 
     /**
      * 新記事作成のフォームを作成する
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\View\View;
      */
-    public function create()
+    public function create():View
     {
         $tags = Tag::all();
 
@@ -49,9 +51,9 @@ class ArticlesController extends Controller
     /**
      * 新記事を保存する
      * @param App\Http\Requests\ArticleFormRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\RedirectResponse;
      */
-    public function store(ArticleFormRequest $request)
+    public function store(ArticleFormRequest $request):RedirectResponse
     {
         DB::beginTransaction();
         try {
@@ -96,8 +98,8 @@ class ArticlesController extends Controller
 
     /**
      * 記事閲覧する
+     * このファンクションの返り型はViewもRedirectResponseも可能なので、固定返り型を指定することは出来ません。
      * @param string $slug
-     * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
@@ -114,9 +116,9 @@ class ArticlesController extends Controller
     /**
      * 記事編集のフォームを作成する
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\View\View;
      */
-    public function edit(string $slug)
+    public function edit(string $slug):View
     {
         $article = Article::whereSlug($slug)->firstOrFail();
         $tags = Tag::all();
@@ -129,9 +131,9 @@ class ArticlesController extends Controller
      * 記事を編集する
      * @param App\Http\Requests\ArticleFormRequest $request
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\RedirectResponse;
      */
-    public function update(ArticleFormRequest $request, string $slug)
+    public function update(ArticleFormRequest $request, string $slug):RedirectResponse
     {
         DB::beginTransaction();
         try {
@@ -173,9 +175,9 @@ class ArticlesController extends Controller
     /**
      * 記事を削除する
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\RedirectResponse;
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug):RedirectResponse
     {
         DB::beginTransaction();
         try {
@@ -190,12 +192,12 @@ class ArticlesController extends Controller
                 }
             }
             $article->images()->delete();
-            $article->delete();     
+            $article->delete();
             DB::commit();
 
             return back()->with('status', '記事削除されました！');
         }
-        catch(Exception $e) {
+        catch (Exception $e) {
             DB::rollBack();
             return back()->with('message', '記事削除が失敗しました。もう一度試してください！');
         }
@@ -203,9 +205,10 @@ class ArticlesController extends Controller
 
     /**
      * ログインしているユーザーの記事を取得する
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\View\View
      */
-    public function myArticles() {
+    public function myArticles():View
+    {
         $articles = Auth::user()->articles()->orderBy('created_at', 'desc')->paginate(10);
 
         return view('articles.my_articles', compact('articles'));

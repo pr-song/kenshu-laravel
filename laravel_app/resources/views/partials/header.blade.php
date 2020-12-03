@@ -26,6 +26,11 @@
           </form>
         </div>
       </li>
+        @if (Auth::user()->hasRole('administrator'))
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">アドミンダッシュボード</a>
+          </li>
+        @endif
       @else
       <li class="nav-item active">
         <a class="nav-link" href="{{ route('login') }}">ログイン</a>
