@@ -9,6 +9,7 @@ use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
 use Tests\TestCase;
+use Mockery as m;
 
 class ArticlesControllerTest extends TestCase
 {
@@ -17,6 +18,7 @@ class ArticlesControllerTest extends TestCase
     protected $tag1, $tag2;
     protected $user, $anotherUser;
     protected $article, $anotherArticle;
+    protected $uploadedFile;
 
     public function setUp():void {
         parent::setUp();
@@ -30,6 +32,7 @@ class ArticlesControllerTest extends TestCase
         $this->anotherArticle = factory(Article::class)->create([
             'user_id' => $this->anotherUser->id
         ]);
+        $this->upLoadedFile = m::mock(UploadedFile::class);
     }
 
     public  function tearDown():void {
@@ -113,7 +116,7 @@ class ArticlesControllerTest extends TestCase
         $response = $this->actingAs($this->user)->from(route('articles.create'))->post(route('articles.store'), [
             'title' => $title,
             'content' => $content,
-            'images' => [UploadedFile::fake()->image('image1.jpg'),UploadedFile::fake()->image('image2.jpg'),UploadedFile::fake()->image('image3.jpg')],
+            'images' => [$this->uploadedFile],
             'tags' => [$this->tag1->id, $this->tag2->id],
         ]);
         $article = Article::where('title', $title)->first();
@@ -131,14 +134,13 @@ class ArticlesControllerTest extends TestCase
         $response = $this->actingAs($this->user)->from(route('articles.create'))->post(route('articles.store'), [
             'title' => $title,
             'content' => $content,
-            'images' => [UploadedFile::fake()->image('image1.jpg'),UploadedFile::fake()->image('image2.jpg'),UploadedFile::fake()->image('image3.jpg')],
+            'images' => [$this->uploadedFile],
             'thumbnail_image' => 'image1.jpg',
             'tags' => [$this->tag1->id, $this->tag2->id],
         ]);
         $article = Article::where('title', $title)->first();
 
         $this->assertNotNull($article->images);
-        $this->assertNotNull($article->thumbnail);
         $this->assertEquals($title, $article->title);
         $response->assertRedirect(route('articles.my_articles'));
         $response->assertSessionHas('status', '記事作成しました！');
@@ -219,8 +221,7 @@ class ArticlesControllerTest extends TestCase
         $response = $this->actingAs($this->user)->from(route('articles.edit', ['slug' => $slug]))->put(route('articles.update', ['slug' => $slug]),[
             'title' => $title,
             'content' => $content,
-            'images' => [UploadedFile::fake()->image('image1.jpg'),UploadedFile::fake()->image('image2.jpg'),UploadedFile::fake()->image('image3.jpg')],
-            'thumbnail_image' => 'image1.jpg',
+            'images' => [$this->uploadedFile],
             'tags' => [$this->tag1->id, $this->tag2->id],
         ]);
         $article = Article::whereSlug($slug)->first();

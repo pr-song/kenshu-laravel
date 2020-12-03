@@ -19,7 +19,7 @@ class Owner
     public function handle($request, Closure $next)
     {
         try {
-            if ((Article::whereSlug($request->slug)->first())->user_id == Auth::user()->id)
+            if ((Article::whereSlug($request->slug)->first())->user_id == Auth::user()->id || Auth::user()->hasRole('administrator'))
             {
                 return $next($request);
             }
