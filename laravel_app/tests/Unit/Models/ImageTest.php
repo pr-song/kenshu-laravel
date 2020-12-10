@@ -26,6 +26,8 @@ class ImageTest extends TestCase
         $article = factory(Article::class)->create(['user_id' => $user->id]);
         $image = factory(Image::class)->create(['article_id' => $article->id]);
 
+
+
         
         $this->assertEquals(1, $image->article->count());
         $this->assertInstanceOf(Article::class, $image->article);
